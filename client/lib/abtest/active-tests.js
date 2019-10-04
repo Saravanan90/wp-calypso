@@ -152,4 +152,12 @@ export default {
 		allowExistingUsers: true,
 		localeTargets: 'any',
 	},
+	passwordlessSignup: {
+		datestamp: '20190927',
+		variations: {
+			passwordless: 0,
+			default: 100,
+		},
+		defaultVariation: 'default',
+	},
 };
