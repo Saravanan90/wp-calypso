@@ -17,6 +17,7 @@ import SidebarBanner from 'my-sites/current-site/sidebar-banner';
 import Notice from 'components/notice';
 import NoticeAction from 'components/notice/notice-action';
 import getActiveDiscount from 'state/selectors/get-active-discount';
+import { clickUpgradeNudge } from 'state/marketing/actions';
 import { domainManagementList } from 'my-sites/domains/paths';
 import { hasDomainCredit } from 'state/sites/plans/selectors';
 import canCurrentUser from 'state/selectors/can-current-user';
@@ -33,6 +34,7 @@ import CartData from 'components/data/cart';
 import TrackComponentView from 'lib/analytics/track-component-view';
 import DomainToPaidPlanNotice from './domain-to-paid-plan-notice';
 import PendingPaymentNotice from './pending-payment-notice';
+import { CTA_FREE_TO_PAID } from './constants';
 
 export class SiteNotice extends React.Component {
 	static propTypes = {
@@ -104,11 +106,12 @@ export class SiteNotice extends React.Component {
 
 		return (
 			<SidebarBanner
-				ctaName="free-to-paid-sidebar"
+				ctaName={ CTA_FREE_TO_PAID }
 				ctaText={ translate( 'Upgrade' ) }
 				href={ '/plans/' + site.slug }
 				icon="info-outline"
 				text={ translate( 'Free domain with a plan' ) }
+				onClick={ () => this.props.clickFreeToPaidPlanNotice( site.ID ) }
 			/>
 		);
 	}
@@ -226,12 +229,8 @@ export default connect(
 						cta_name: 'current_site_domain_notice',
 					} )
 				),
-			clickFreeToPaidPlanNotice: () =>
-				dispatch(
-					recordTracksEvent( 'calypso_upgrade_nudge_cta_click', {
-						cta_name: 'free-to-paid-sidebar',
-					} )
-				),
+			clickFreeToPaidPlanNotice: siteId =>
+				dispatch( clickUpgradeNudge( siteId, CTA_FREE_TO_PAID ) ),
 		};
 	}
 )( localize( SiteNotice ) );
